@@ -4,6 +4,7 @@
 cloud-init.yml
 *.secret
 *.tmpl2
+*.enc
 
 *.env
 vault.yml
