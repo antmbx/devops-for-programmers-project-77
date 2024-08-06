@@ -1,6 +1,7 @@
 *.auto.tfvars
 *.auto.tf
 *.backup
+cloud-init.yml
 
 # Local .terraform directories
 **/.terraform/*
