@@ -1,4 +1,5 @@
 
+/*
 resource "yandex_mdb_postgresql_cluster" "dbcluster" {
   name        = "tfhexlet"
   environment = "PRESTABLE"
@@ -48,4 +49,4 @@ resource "yandex_mdb_postgresql_database" "db" {
   lc_type    = "en_US.UTF-8"
   depends_on = [yandex_mdb_postgresql_cluster.dbcluster]
 }
-
+*/
