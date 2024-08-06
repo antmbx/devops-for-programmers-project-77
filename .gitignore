@@ -2,6 +2,7 @@
 *.auto.tf
 *.backup
 cloud-init.yml
+*.secret
 
 # Local .terraform directories
 **/.terraform/*
