@@ -30,11 +30,13 @@ tf-destroy:
 cp-tmpl2vars: cp-tmpl2vars-backend cp-tmpl2vars-main
 
 cp-tmpl2vars-backend:
+	mkdir -p terraform/secret_vars
 	cp terraform/tmpl/secret.backend.tmpl terraform/secret_vars/secret.backend.tfvars
 	@echo "\n\n>> Next fill out the template file terraform/secret_vars/secret.backend.tfvars"
 	@echo ">> After that, encrypt the file terraform/secret_vars/terraform/secret_vars/var.secret.auto.tf (keyFile key.secret): make ansible-enc-backend \n" 
 
 cp-tmpl2vars-main:
+	mkdir -p terraform/secret_vars
 	cp terraform/tmpl/var.secret.auto.tmpl terraform/secret_vars/var.secret.auto.tf
 	@echo ">> Next fill out the template file terraform/secret_vars/terraform/secret_vars/var.secret.auto.tf" 
 	@echo ">> After that, encrypt the file terraform/secret_vars/terraform/secret_vars/var.secret.auto.tf (keyFile key.secret): make ansible-enc-main \n" 
