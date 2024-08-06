@@ -3,7 +3,7 @@
 *.backup
 cloud-init.yml
 *.secret
-*secret.*
+*.tmpl2
 
 *.env
 vault.yml
