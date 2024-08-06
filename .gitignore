@@ -3,6 +3,10 @@
 *.backup
 cloud-init.yml
 *.secret
+*secret.*
+
+*.env
+vault.yml
 
 # Local .terraform directories
 **/.terraform/*
