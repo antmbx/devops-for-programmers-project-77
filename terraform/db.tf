@@ -1,4 +1,4 @@
-/*
+
 resource "yandex_mdb_postgresql_cluster" "dbcluster" {
   name        = "tfhexlet"
   environment = "PRESTABLE"
@@ -10,7 +10,7 @@ resource "yandex_mdb_postgresql_cluster" "dbcluster" {
     resources {
       resource_preset_id = "s2.micro"
       disk_type_id       = "network-ssd"
-      disk_size          = 1
+      disk_size          = 10
     }
     postgresql_config = {
       max_connections    = 100
@@ -49,4 +49,3 @@ resource "yandex_mdb_postgresql_database" "db" {
   depends_on = [yandex_mdb_postgresql_cluster.dbcluster]
 }
 
-*/
