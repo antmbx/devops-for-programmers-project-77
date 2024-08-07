@@ -5,7 +5,8 @@ cloud-init.yml
 *.secret
 *.tmpl2
 *.enc
-
+*.key
+*.crt
 *.env
 vault.yml
 

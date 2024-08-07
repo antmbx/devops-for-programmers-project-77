@@ -3,7 +3,7 @@ pip_install_packages:
   - name: docker
     version: 7.1.0
 
-LB_HOST: "192.168.0.244"
+LB_HOST: yc-web-1
 DB_POSTGRES: "192.168.0.243"
-REDMINE_DB_PORT: "5432"
+REDMINE_DB_PORT: "6432"
 REDMINE_DB_USERNAME: redmine

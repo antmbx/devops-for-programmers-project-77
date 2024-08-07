@@ -1,6 +1,8 @@
 # Makefile
  
-
+ansible-ex:
+	ansible-galaxy install -r requirements.yml
+	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t prep --ask-vault-pass
 
 yc-reconf:
 	ansible-vault  decrypt terraform/secret.backend.tfvars.enc --vault-password-file key.secret --output terraform/secret.backend.tfvars
@@ -35,6 +37,11 @@ tf-create:
 	ansible-vault  decrypt terraform/var.secret.auto.tf.enc --vault-password-file key.secret --output terraform/var.secret.auto.tf
 	terraform -chdir=terraform apply 
 	rm -f terraform/var.secret.auto.tf
+
+	ansible-galaxy install -r ansible/requirements.yml
+	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t prep --ask-vault-pass
+
+
 
 tf-destroy:
 	ansible-vault  decrypt terraform/var.secret.auto.tf.enc --vault-password-file key.secret --output terraform/var.secret.auto.tf
