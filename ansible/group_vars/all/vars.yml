@@ -1,0 +1,9 @@
+pip_install_packages:
+  # Specify names and versions.
+  - name: docker
+    version: 7.1.0
+
+LB_HOST: "192.168.0.244"
+DB_POSTGRES: "192.168.0.243"
+REDMINE_DB_PORT: "5432"
+REDMINE_DB_USERNAME: redmine

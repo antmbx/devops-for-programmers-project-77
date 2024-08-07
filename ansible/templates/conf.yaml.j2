@@ -1,0 +1,8 @@
+init_config:
+
+instances:
+  - name: HTTPS REDMINE
+    url: {{ HTTPS }}
+
+  - name: HTTP INNER REDMINE
+    url: {{ LB_HOST }}:{{ REDMINE_HTTP_INNER_PORT }}

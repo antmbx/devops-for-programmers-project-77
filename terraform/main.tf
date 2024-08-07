@@ -35,7 +35,7 @@ resource "yandex_compute_instance" "default" {
 
 
   network_interface {
-    subnet_id = "${yandex_vpc_subnet.default.id}"
+    subnet_id = var.networkID #"${yandex_vpc_subnet.default.id}"
     nat = each.value.nat
   }
 
@@ -65,6 +65,8 @@ EOT
 
 }
 
+
+/*
 resource "yandex_vpc_network" "default" {
   folder_id   = var.folderID
 }
@@ -75,6 +77,8 @@ resource "yandex_vpc_subnet" "default" {
   v4_cidr_blocks = ["10.5.0.0/24"]
   folder_id   = var.folderID
 }
+*/
+
 
 resource "yandex_compute_disk" "default" {
 

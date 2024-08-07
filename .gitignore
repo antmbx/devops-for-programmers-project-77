@@ -9,6 +9,10 @@ cloud-init.yml
 *.env
 vault.yml
 
+
+*.env
+vault.yml
+
 # Local .terraform directories
 **/.terraform/*
 

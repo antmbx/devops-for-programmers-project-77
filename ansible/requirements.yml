@@ -1,0 +1,13 @@
+roles:
+  - name: geerlingguy.pip
+    version: "3.0.3"
+
+  - name: DataDog.datadog
+    version: "4.24.0"
+
+
+collections:
+  - name: community.docker
+    version: "3.11.0"
+    source: https://galaxy.ansible.com
+
