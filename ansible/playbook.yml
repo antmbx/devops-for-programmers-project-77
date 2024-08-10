@@ -3,9 +3,6 @@
 
 - hosts: all
   become: yes
- # become_method: sudo
- # become_user: root
- # remote_user: ubuntu 
   tasks:
 
 
@@ -61,7 +58,7 @@
       ansible.builtin.apt:
           name: python3-pip #=23.0.1+dfsg-1  # Action от hexlet не понимает эту версию... у меня дебиан Bookworm
           state: present
-          #update_cache: yes
+
       tags: 
       - prep2
 
@@ -72,10 +69,7 @@
 
 # Подготовка веб-серверов
 - hosts: webservers
-  become: yes
-  #become_method: sudo
-  #become_user: ubuntu
-  #remote_user: ubuntu   
+  become: yes  
   tasks:
 
 # Удаление контейнера при ресете
@@ -87,19 +81,6 @@
       - del-redmine  
       - reinstall-redmine        
 
-# Переменные окружения
-#    - name: Set env
-#      ansible.builtin.template: 
-#        src: "redmine.env.j2"
-#        dest: /home/ubuntu/.env
-#        owner: user
-#        group: user
-#        mode: '0660'        
-#      tags: 
-#      - install-redmine       
-#      - reinstall-redmine 
-#      - prep
-
 # Создание контейнеров редмайн
     - name: Creates container redmine  
       community.docker.docker_container:
@@ -109,8 +90,7 @@
         state: started
         ports:
           - "{{ REDMINE_HTTP_INNER_PORT }}:3000"
-#        etc_hosts:
-#          postgres-db: "{{ DB_POSTGRES }}"
+
         env_file: /home/ubuntu/.env
 
       tags:
@@ -129,8 +109,6 @@
         state: started
         ports:
           - "{{ REDMINE_HTTP_INNER_PORT }}:3000"
-#        etc_hosts:
-#          postgres-db: "{{ DB_POSTGRES }}"
 
         env_file: /home/ubuntu/.env
       tags:
@@ -139,14 +117,10 @@
 # Подготовка LB
 
 - hosts: lbservers
-  become: yes
- # become_method: sudo
-  #become_user: ubuntu
-  #remote_user: ubuntu 
+
   tasks:
-# Установка nginx для теста
+# Установка nginx
     - name: install nginx
-    # apt-get update && apt-get install redis-server
       ansible.builtin.apt:
         name: nginx
         state: latest

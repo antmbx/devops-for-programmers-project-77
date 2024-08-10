@@ -27,9 +27,7 @@ resource "yandex_mdb_postgresql_cluster" "dbcluster" {
     subnet_id = var.subNetworkID
   }
 
-
-    #depends_on  = [yandex_vpc_network.default, yandex_vpc_subnet.default]
-
+    
 }
 
 resource "yandex_mdb_postgresql_user" "dbuser" {
