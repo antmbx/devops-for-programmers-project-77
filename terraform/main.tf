@@ -45,6 +45,10 @@ resource "yandex_compute_instance" "default" {
     user-data = <<-EOF
     #!/bin/bash
     echo 'export REDMINE_DB_POSTGRES="${data.yandex_mdb_postgresql_cluster.dbcluster.host.0.fqdn}"' >> .env
+    echo 'export REDMINE_DB_PORT="6432"' >> .env 
+    echo 'export REDMINE_DB_DATABASE="${var.db_name}"' >> .env
+    echo 'export REDMINE_DB_USERNAME="${var.db_user}"' >> .env
+    echo 'export REDMINE_DB_PASSWORD="${var.db_password}"' >> .env
     EOF
 
     
