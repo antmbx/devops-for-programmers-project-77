@@ -3,6 +3,7 @@
 *.backup
 cloud-init.yml
 *.secret
+*.secret.*
 *.tmpl2
 *.enc
 *.key
