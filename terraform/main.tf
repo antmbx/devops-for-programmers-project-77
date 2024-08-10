@@ -41,7 +41,13 @@ resource "yandex_compute_instance" "default" {
 
   metadata = {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
-    user-data = "${file("./cloud-init.yml")}"
+    #user-data = "${file("./cloud-init.yml")}"
+    user-data = <<-EOF
+    #!/bin/bash
+    echo 'export REDMINE_DB_POSTGRES="${data.yandex_mdb_postgresql_cluster.dbcluster.host.0.fqdn}"' >> .env
+    EOF
+
+    
   }
 
 
