@@ -85,7 +85,9 @@ ansible-enc-main:
 ansible-restore-var: ansible-restore-var-backend ansible-restore-var-main
 
 ansible-restore-var-backend:
+	mkdir -p terraform/secret_vars
 	ansible-vault  decrypt terraform/secret.backend.tfvars.enc --vault-password-file key.secret --output terraform/secret_vars/secret.backend.tfvars
 
-ansible-restore-var-main:	
+ansible-restore-var-main:
+	mkdir -p terraform/secret_vars	
 	ansible-vault  decrypt terraform/var.secret.auto.tf.enc  --vault-password-file key.secret --output terraform/secret_vars/var.secret.auto.tf

@@ -1,10 +1,8 @@
-
-
 resource "yandex_mdb_postgresql_cluster" "dbcluster" {
-  name        = "tfhexlet"
+  name        = "tf-cluster-hexlet"
   environment = "PRESTABLE"
   folder_id   = var.folderID
-  network_id  = "${yandex_vpc_network.default.id}"
+  network_id  = var.networkID
 
   config {
     version = var.yc_postgresql_version
@@ -26,11 +24,11 @@ resource "yandex_mdb_postgresql_cluster" "dbcluster" {
 
   host {
     zone      = "ru-central1-a"
-    subnet_id = "${yandex_vpc_subnet.default.id}"
+    subnet_id = var.subNetworkID
   }
 
 
-    depends_on  = [yandex_vpc_network.default, yandex_vpc_subnet.default]
+    #depends_on  = [yandex_vpc_network.default, yandex_vpc_subnet.default]
 
 }
 

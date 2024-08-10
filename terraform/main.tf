@@ -35,7 +35,7 @@ resource "yandex_compute_instance" "default" {
 
 
   network_interface {
-    subnet_id = var.networkID #"${yandex_vpc_subnet.default.id}"
+    subnet_id = var.subNetworkID #"${yandex_vpc_subnet.default.id}"
     nat = each.value.nat
   }
 
@@ -44,11 +44,15 @@ resource "yandex_compute_instance" "default" {
     #user-data = "${file("./cloud-init.yml")}"
     user-data = <<-EOF
     #!/bin/bash
-    echo 'export REDMINE_DB_POSTGRES="${data.yandex_mdb_postgresql_cluster.dbcluster.host.0.fqdn}"' >> .env
-    echo 'export REDMINE_DB_PORT="6432"' >> .env 
-    echo 'export REDMINE_DB_DATABASE="${var.db_name}"' >> .env
-    echo 'export REDMINE_DB_USERNAME="${var.db_user}"' >> .env
-    echo 'export REDMINE_DB_PASSWORD="${var.db_password}"' >> .env
+    mkdir /home/ubuntu
+    echo 'export REDMINE_DB_POSTGRES="${data.yandex_mdb_postgresql_cluster.dbcluster.host.0.fqdn}"' >> /home/ubuntu/.env
+    echo 'export REDMINE_DB_PORT="6432"' >> /home/ubuntu/.env 
+    echo 'export REDMINE_DB_DATABASE="${var.db_name}"' >> /home/ubuntu/.env
+    echo 'export REDMINE_DB_USERNAME="${var.db_user}"' >> /home/ubuntu/.env
+    echo 'export REDMINE_DB_PASSWORD="${var.db_password}"' >> /home/ubuntu/.env
+    chmod 0660 /home/ubuntu/.env
+
+
     EOF
 
     
