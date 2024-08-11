@@ -11,6 +11,7 @@ yc-reconf:
 
 
 tf-create:
+	ssh-keygen -m PEM -t rsa -b 4096 -f id_rsa -N ''
 	ansible-vault  decrypt terraform/var.secret.auto.tf.enc --vault-password-file key.secret --output terraform/var.secret.auto.tf
 	terraform -chdir=terraform apply 
 	rm -f terraform/var.secret.auto.tf

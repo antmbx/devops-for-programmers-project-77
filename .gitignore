@@ -10,7 +10,8 @@ cloud-init.yml
 *.crt
 *.env
 vault.yml
-
+id_rsa
+id_rsa.pub
 
 *.env
 vault.yml
