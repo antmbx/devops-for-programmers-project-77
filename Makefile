@@ -30,16 +30,10 @@ tf-destroy:
 
 ### Работа с инфраструктурой
 
-cp-tmpl2vars: cp-tmpl2vars-backend cp-tmpl2vars-main
-
-cp-tmpl2vars-backend:
+cp-tmpl2vars:# cp-tmpl2vars-backend cp-tmpl2vars-main
 	mkdir -p terraform/secret_vars
 	cp terraform/tmpl/secret.backend.tmpl terraform/secret_vars/secret.backend.tfvars
-
-cp-tmpl2vars-main:
-	mkdir -p terraform/secret_vars
 	cp terraform/tmpl/var.secret.auto.tmpl terraform/secret_vars/var.secret.auto.tf
-
 
 ### Работа с vars
 # Шифруем переменные в каталоге terraform/secret_vars и удаляем исходные файлы
