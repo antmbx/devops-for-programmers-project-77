@@ -32,7 +32,7 @@ make ansible-ex
 ### Подготовка секретов и переменных
 
 #### Ключи для TLS веб-сайта
-Разместите ключи в каталоге /ansible/keys
+Разместите ключи в каталоге [/ansible/keys](https://github.com/antmbx/devops-for-programmers-project-77/tree/main/ansible/keys)
 - сертификат с именем файла cert.crt
 - ключ с именем файла key.key
 
