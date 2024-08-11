@@ -86,4 +86,7 @@ resource "yandex_compute_disk" "default" {
   image_id = "fd83s8u085j3mq231ago" 
   folder_id   = var.folderID
   size = 10 
+#  labels = {
+#    environment = "test"
+#  }
 }
