@@ -1,4 +1,10 @@
 
+variable "yc_token" {}
+variable "folderID" {}
+variable "web-servers" {}
+variable "networkID" {}
+
+
 provider "yandex" {
   zone = "ru-central1-a"
   token = var.yc_token
