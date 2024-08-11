@@ -1,6 +1,10 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/antmbx/devops-for-programmers-project-77/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/antmbx/devops-for-programmers-project-77/actions)
 
+[![UPMON](https://www.upmon.com/badge/49fff047-2b66-4a11-8eb9-3d41d3/2-chJkvO.svg)](https://hexlet.azxs.ru/)
+
+
+
 # Описание проекта
 > 1. Load balancer + reverse proxy (nginx)
 > 2. Веб-сервер 1

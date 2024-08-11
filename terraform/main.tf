@@ -7,11 +7,11 @@ provider "yandex" {
 
 
 resource "yandex_compute_instance" "default" {
-  #name        = "test"
+
   platform_id = "standard-v1"
   zone        = "ru-central1-a"
   folder_id   = var.folderID
-  #hostname    = var.web_hostname_1  
+ 
       
     for_each = var.web-servers
     name = each.value.name
@@ -25,9 +25,6 @@ resource "yandex_compute_instance" "default" {
 
   
 
-  #boot_disk {
-  #  disk_id = yandex_compute_disk.default.id
-  #}
 
   boot_disk {
     disk_id = yandex_compute_disk.default[each.key].id
@@ -35,7 +32,7 @@ resource "yandex_compute_instance" "default" {
 
 
   network_interface {
-    subnet_id = var.subNetworkID #"${yandex_vpc_subnet.default.id}"
+    subnet_id = var.subNetworkID 
     nat = each.value.nat
   }
 
@@ -59,39 +56,9 @@ resource "yandex_compute_instance" "default" {
   }
 
 
-/*
-  provisioner "remote-exec" {
-  inline = [
-<<EOT
-sudo docker run -d -p 0.0.0.0:80:3000 \
-  -e DB_TYPE=postgres \
-  -e DB_NAME=${var.db_name} \
-  -e DB_HOST=${yandex_mdb_postgresql_cluster.dbcluster.host.0.fqdn} \
-  -e DB_PORT=6432 \
-  -e DB_USER=${var.db_user} \
-  -e DB_PASS=${var.db_password} \
-  ghcr.io/requarks/wiki:2.5
-EOT
-    ]
-  }
-*/
 
 
 }
-
-
-/*
-resource "yandex_vpc_network" "default" {
-  folder_id   = var.folderID
-}
-
-resource "yandex_vpc_subnet" "default" {
-  zone           = "ru-central1-a"
-  network_id     = "${yandex_vpc_network.default.id}"
-  v4_cidr_blocks = ["10.5.0.0/24"]
-  folder_id   = var.folderID
-}
-*/
 
 
 resource "yandex_compute_disk" "default" {
