@@ -1,3 +1,6 @@
+variable "yc_postgresql_version" {}
+
+
 resource "yandex_mdb_postgresql_cluster" "dbcluster" {
   name        = "tf-cluster-hexlet"
   environment = "PRESTABLE"
