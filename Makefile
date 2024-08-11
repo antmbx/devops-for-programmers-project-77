@@ -17,7 +17,7 @@ tf-create:
 	sleep 120
 	resolvectl flush-caches
 	ansible-galaxy install -r ansible/requirements.yml
-	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t prep --ask-vault-pass
+	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t prep --vault-password-file key.secret
 
 
 
@@ -68,3 +68,26 @@ ansible-restore-var-backend:
 ansible-restore-var-main:
 	mkdir -p terraform/secret_vars	
 	ansible-vault  decrypt terraform/var.secret.auto.tf.enc  --vault-password-file key.secret --output terraform/secret_vars/var.secret.auto.tf
+
+
+
+ansible-new-api:
+	chmod +x ansible/scripts/set_new_api.sh
+	./ansible/scripts/set_new_api.sh	
+	ansible-vault encrypt ansible/group_vars/webservers/vault.yml --vault-password-file key.secret
+	
+
+ansible-restart-dd:
+	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t restart-datadog --vault-password-file key.secret
+
+
+
+ansible-new-upmon: ansible-upmon-token  ansible-upmon-reload
+
+ansible-upmon-token:
+	chmod +x ansible/scripts/set_new_upmon.sh
+	./ansible/scripts/set_new_upmon.sh	
+	ansible-vault encrypt ansible/group_vars/lbservers/vault.yml --vault-password-file key.secret
+
+ansible-upmon-reload:
+		ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t upmon --vault-password-file key.secret

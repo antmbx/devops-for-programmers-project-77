@@ -54,18 +54,6 @@
       - prep
 
 
-    - name: install pip
-      ansible.builtin.apt:
-          name: python3-pip #=23.0.1+dfsg-1  # Action от hexlet не понимает эту версию... у меня дебиан Bookworm
-          state: present
-
-      tags: 
-      - prep2
-
-  roles:
-    - role: geerlingguy.pip
-      tags: 
-      - prep2
 
 # Подготовка веб-серверов
 - hosts: webservers
@@ -114,6 +102,47 @@
       tags:
       - restart-redmine       
 
+
+
+# Настраиваем проверку HTTP в DD
+    - name: Set HTTP check
+      ansible.builtin.template: 
+        src: "conf.yaml.j2"
+        dest: "/etc/datadog-agent/conf.d/http_check.d/conf.yaml"
+        owner: user
+        group: user
+        mode: '0660'
+      
+      notify:
+        - restart datadog-agent       
+      tags: 
+      - restart-datadog
+      - prep
+
+# Рестартуем агентов на вебсерверах после изменения конфигов
+  handlers:
+    - name: restart datadog-agent
+      ansible.builtin.service:
+        name: datadog-agent
+        state: restarted
+      tags: 
+      - restart-datadog 
+      - prep
+
+
+# Установка DD на веб-серверах
+  roles:
+    - role: DataDog.datadog
+      tags: 
+      - prep  
+      - restart-datadog
+
+
+
+
+
+
+
 # Подготовка LB
 
 - hosts: lbservers
@@ -139,9 +168,9 @@
       ansible.builtin.template: 
         src: "nginx.conf.j2"
         dest: "/etc/nginx/sites-available/default"
+      notify:
+        - restart nginx
       tags: 
-      - reinstall-bd
-      - install-bd 
       - prep
 
     - name: Copy keys
@@ -151,9 +180,24 @@
         owner: root
         group: root
         mode: '0600'
+      notify:
+        - restart nginx        
       tags: 
       - reinstall-bd
       - install-bd 
+      - prep
+
+
+    - name: a job check upmon
+      ansible.builtin.cron:
+        name: "check lb"
+        hour: "*"
+        minute: "*/30"
+        job: "curl -fsS -m 10 --retry 5 -o /dev/null https://upmon.net/{{ upmontoken }}"
+      notify:
+        - restart cron
+      tags: 
+      - upmon
       - prep
 
 
@@ -173,7 +217,17 @@
       - install-nginx
       - prep      
 
+    - name: restart cron
+      ansible.builtin.service:
+        name: cron
+        state: restarted
+      tags: 
+      - upmon
+      - prep
 
+
+
+  
 
  
 
