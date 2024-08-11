@@ -3,6 +3,15 @@ variable "yc_token" {}
 variable "folderID" {}
 variable "web-servers" {}
 variable "networkID" {}
+variable "subNetworkID" {}
+variable "db_name" {}
+variable "db_user" {}
+variable "db_password" {}
+
+
+
+
+
 
 
 provider "yandex" {
