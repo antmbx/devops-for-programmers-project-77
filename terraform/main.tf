@@ -7,7 +7,7 @@ variable "subNetworkID" {}
 variable "db_name" {}
 variable "db_user" {}
 variable "db_password" {}
-
+variable "ssh_pub" {}
 
 
 
@@ -52,7 +52,7 @@ resource "yandex_compute_instance" "default" {
   }
 
   metadata = {
-    ssh-keys = "ubuntu:${file("id_rsa.pub")}"
+    ssh-keys = "ubuntu:${var.ssh_pub}"
     #user-data = "${file("./cloud-init.yml")}"
     user-data = <<-EOF
     #!/bin/bash
