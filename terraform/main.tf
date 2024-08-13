@@ -10,7 +10,7 @@ variable "db_password" {}
 variable "ssh_pub" {}
 
 provider "yandex" {
-  zone = "ru-central1-a"
+  zone  = "ru-central1-a"
   token = var.yc_token
 }
 
@@ -21,9 +21,9 @@ resource "yandex_compute_instance" "default" {
   platform_id = "standard-v1"
   zone        = "ru-central1-a"
   folder_id   = var.folderID
- 
+
   for_each = var.web-servers
-  name = each.value.name
+  name     = each.value.name
   hostname = each.value.hostname
 
 
@@ -32,7 +32,7 @@ resource "yandex_compute_instance" "default" {
     memory = 2
   }
 
-  
+
 
 
   boot_disk {
@@ -41,8 +41,8 @@ resource "yandex_compute_instance" "default" {
 
 
   network_interface {
-    subnet_id = var.subNetworkID 
-    nat = each.value.nat
+    subnet_id = var.subNetworkID
+    nat       = each.value.nat
   }
 
   metadata = {
@@ -62,18 +62,18 @@ resource "yandex_compute_instance" "default" {
 
     EOF
 
-    
+
   }
 }
 
 
 resource "yandex_compute_disk" "default" {
 
-  for_each = var.web-servers
-  name     = "${each.key}"
-  type     = "network-ssd"
-  zone     = "ru-central1-a"
-  image_id = "fd83s8u085j3mq231ago" 
-  folder_id   = var.folderID
-  size = 10 
+  for_each  = var.web-servers
+  name      = each.key
+  type      = "network-ssd"
+  zone      = "ru-central1-a"
+  image_id  = "fd83s8u085j3mq231ago"
+  folder_id = var.folderID
+  size      = 10
 }

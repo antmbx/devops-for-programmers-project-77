@@ -15,7 +15,7 @@ resource "yandex_mdb_postgresql_cluster" "dbcluster" {
       disk_size          = 10
     }
     postgresql_config = {
-      max_connections    = 100
+      max_connections = 100
     }
   }
 
@@ -30,7 +30,7 @@ resource "yandex_mdb_postgresql_cluster" "dbcluster" {
     subnet_id = var.subNetworkID
   }
 
-    
+
 }
 
 resource "yandex_mdb_postgresql_user" "dbuser" {
