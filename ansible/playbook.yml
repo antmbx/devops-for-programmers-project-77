@@ -2,20 +2,20 @@
 # ansible-playbook playbook.yml -i inventory.ini -kK --ask-vault-pass
 
 - hosts: webservers
-  become: yes  
+  become: yes
   tasks:
 
 # Подготовка веб-серверов
 # Установка докера
     - name: install transport
       ansible.builtin.apt:
-        name: 
+        name:
           - apt-transport-https
           - ca-certificates
           - curl
           - gnupg-agent
-        update_cache: yes           
-      tags: 
+        update_cache: yes
+      tags:
       - prep
 
     - name: add GPG key
@@ -41,7 +41,7 @@
           - docker-buildx-plugin
           - docker-compose-plugin
           - docker-compose
-        update_cache: yes        
+        update_cache: yes
       tags: 
       - prep
 
@@ -78,7 +78,7 @@
         env_file: /home/ubuntu/.env
 
       tags:
-      - reinstall-redmine       
+      - reinstall-redmine
       - install-redmine
       - prep
 
@@ -102,7 +102,7 @@
 
 # Настраиваем проверку HTTP в DD
     - name: Set HTTP check
-      ansible.builtin.template: 
+      ansible.builtin.template:
         src: "conf.yaml.j2"
         dest: "/etc/datadog-agent/conf.d/http_check.d/conf.yaml"
         owner: user
@@ -110,7 +110,7 @@
         mode: '0660'
       
       notify:
-        - restart datadog-agent       
+        - restart datadog-agent
       tags: 
       - restart-datadog
       - prep
@@ -137,7 +137,7 @@
 # Подготовка LB
 
 - hosts: lbservers
-  become: yes 
+  become: yes
   tasks:
 # Установка nginx
     - name: install nginx
@@ -152,13 +152,13 @@
       - prep
 
     - name: update nginx.conf
-      ansible.builtin.template: 
+      ansible.builtin.template:
         src: "nginx.conf.j2"
         dest: "/etc/nginx/sites-available/default"
       notify:
         - restart nginx
       tags: 
-      - install-nginx      
+      - install-nginx
       - prep
 
     - name: Copy keys
@@ -169,10 +169,10 @@
         group: root
         mode: '0600'
       notify:
-        - restart nginx        
+        - restart nginx
       tags: 
       - prep
-      - install-nginx      
+      - install-nginx
 
 
     - name: a job check upmon
@@ -202,7 +202,7 @@
         state: reloaded
       tags: 
       - install-nginx
-      - prep      
+      - prep
 
     - name: restart cron
       ansible.builtin.service:
@@ -215,7 +215,7 @@
 
 
 - hosts: all
-  become: yes  
+  become: yes
   tasks:  
 
     - name: Reboot machine and send a message
