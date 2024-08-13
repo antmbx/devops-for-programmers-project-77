@@ -9,11 +9,6 @@ variable "db_user" {}
 variable "db_password" {}
 variable "ssh_pub" {}
 
-
-
-
-
-
 provider "yandex" {
   zone = "ru-central1-a"
   token = var.yc_token
@@ -27,10 +22,9 @@ resource "yandex_compute_instance" "default" {
   zone        = "ru-central1-a"
   folder_id   = var.folderID
  
-      
-    for_each = var.web-servers
-    name = each.value.name
-    hostname = each.value.hostname
+  for_each = var.web-servers
+  name = each.value.name
+  hostname = each.value.hostname
 
 
   resources {
@@ -70,10 +64,6 @@ resource "yandex_compute_instance" "default" {
 
     
   }
-
-
-
-
 }
 
 
@@ -86,7 +76,4 @@ resource "yandex_compute_disk" "default" {
   image_id = "fd83s8u085j3mq231ago" 
   folder_id   = var.folderID
   size = 10 
-#  labels = {
-#    environment = "test"
-#  }
 }
