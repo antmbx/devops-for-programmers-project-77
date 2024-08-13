@@ -91,8 +91,8 @@ ansible-upmon-token:
 	ansible-vault encrypt ansible/group_vars/lbservers/vault.yml --vault-password-file key.secret
 
 ansible-upmon-reload:
-		ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t upmon --vault-password-file key.secret
+	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t upmon --vault-password-file key.secret
 
 
 ansible-restart:
-		ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t restart --vault-password-file key.secret		
+	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t restart --vault-password-file key.secret		
