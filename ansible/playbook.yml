@@ -98,8 +98,6 @@
       tags:
       - restart-redmine       
 
-
-
 # Настраиваем проверку HTTP в DD
     - name: Set HTTP check
       ansible.builtin.template:
@@ -110,7 +108,7 @@
         mode: '0660'
       
       notify:
-        - restart datadog-agent
+      - restart datadog-agent
       tags: 
       - restart-datadog
       - prep
