@@ -38,8 +38,8 @@ cp-tmpl2vars-backend:
 cp-tmpl2vars-main:
 	mkdir -p terraform/secret_vars
 	cp terraform/tmpl/var.secret.auto.tmpl terraform/secret_vars/var.secret.auto.tf
-	@echo ">> Next fill out the template file terraform/secret_vars/terraform/secret_vars/var.secret.auto.tf" 
-	@echo ">> After that, encrypt the file terraform/secret_vars/terraform/secret_vars/var.secret.auto.tf (keyFile key.secret): make ansible-enc-main \n" 
+	@echo ">> Next fill out the template file terraform/secret_vars/terraform/secret_vars/var.secret.auto.tf"
+	@echo ">> After that, encrypt the file terraform/secret_vars/terraform/secret_vars/var.secret.auto.tf (keyFile key.secret): make ansible-enc-main \n"
 
 ### Работа с vars
 # Шифруем переменные в каталоге terraform/secret_vars и удаляем исходные файлы
