@@ -1,12 +1,12 @@
+---
 # ansible-galaxy install -r requirements.yml
 # ansible-playbook playbook.yml -i inventory.ini -kK --ask-vault-pass
 
 - hosts: webservers
-  become: yes
+  become: true
   tasks:
-
-# Подготовка веб-серверов
-# Установка докера
+    # Подготовка веб-серверов
+    # Установка докера
     - name: install transport
       ansible.builtin.apt:
         name:
@@ -14,62 +14,59 @@
           - ca-certificates
           - curl
           - gnupg-agent
-        update_cache: yes
+        update_cache: true
       tags:
-      - prep
+        - prep
 
     - name: add GPG key
       apt_key:
         url: https://download.docker.com/linux/debian/gpg
         state: present
-      tags:  
-      - prep
+      tags:
+        - prep
 
     - name: add docker repository to apt
       apt_repository:
         repo: deb https://download.docker.com/linux/debian bookworm stable
         state: present
-      tags: 
-      - prep
+      tags:
+        - prep
 
     - name: install docker
       ansible.builtin.apt:
-        name: 
+        name:
           - docker-ce
           - docker-ce-cli
           - containerd.io
           - docker-buildx-plugin
           - docker-compose-plugin
           - docker-compose
-        update_cache: yes
-      tags: 
-      - prep
+        update_cache: true
+      tags:
+        - prep
 
     - name: Add the user user in docker
       ansible.builtin.user:
         name: user
         groups: docker
-        append: yes
-      tags: 
-      - prep
+        append: true
+      tags:
+        - prep
 
-      
-
-
-# Удаление контейнера при ресете
+    # Удаление контейнера при ресете
     - name: Remove container
       community.docker.docker_container:
         name: redmine
         state: absent
-      tags: 
-      - del-redmine  
-      - reinstall-redmine        
+      tags:
+        - del-redmine
+        - reinstall-redmine
 
-# Создание контейнеров редмайн
-    - name: Creates container redmine  
+    # Создание контейнеров редмайн
+    - name: Creates container redmine
       community.docker.docker_container:
         name: redmine
-        image: "redmine:5.1.3"
+        image: redmine:5.1.3
         restart_policy: always
         state: started
         ports:
@@ -78,17 +75,17 @@
         env_file: /home/ubuntu/.env
 
       tags:
-      - reinstall-redmine
-      - install-redmine
-      - prep
+        - reinstall-redmine
+        - install-redmine
+        - prep
 
-# Перезапуск контейнеров редмайн, например при изменении конфигурации, пароля от БД
-    - name: Restart container redmine  
+    # Перезапуск контейнеров редмайн, например при изменении конфигурации, пароля от БД
+    - name: Restart container redmine
       community.docker.docker_container:
         name: redmine
         #recreate: true
-        restart: true        
-        image: "redmine:5.1.3"
+        restart: true
+        image: redmine:5.1.3
         restart_policy: always
         state: started
         ports:
@@ -96,68 +93,66 @@
 
         env_file: /home/ubuntu/.env
       tags:
-      - restart-redmine       
+        - restart-redmine
 
-# Настраиваем проверку HTTP в DD
+    # Настраиваем проверку HTTP в DD
     - name: Set HTTP check
       ansible.builtin.template:
-        src: "conf.yaml.j2"
-        dest: "/etc/datadog-agent/conf.d/http_check.d/conf.yaml"
+        src: conf.yaml.j2
+        dest: /etc/datadog-agent/conf.d/http_check.d/conf.yaml
         owner: user
         group: user
-        mode: '0660'
-      
-      notify:
-      - restart datadog-agent
-      tags: 
-      - restart-datadog
-      - prep
+        mode: "0660"
 
-# Рестартуем агентов на вебсерверах после изменения конфигов
+      notify:
+        - restart datadog-agent
+      tags:
+        - restart-datadog
+        - prep
+
+  # Рестартуем агентов на вебсерверах после изменения конфигов
   handlers:
     - name: restart datadog-agent
       ansible.builtin.service:
         name: datadog-agent
         state: restarted
-      tags: 
-      - restart-datadog 
-      - prep
+      tags:
+        - restart-datadog
+        - prep
 
-
-# Установка DD на веб-серверах
+  # Установка DD на веб-серверах
   roles:
     - role: DataDog.datadog
-      tags: 
-      - prep  
-      - restart-datadog
-
+      tags:
+        - prep
+        - restart-datadog
 
 # Подготовка LB
 
 - hosts: lbservers
-  become: yes
+  become: true
   tasks:
-# Установка nginx
+    # Установка nginx
     - name: install nginx
       ansible.builtin.apt:
         name: nginx
         state: latest
-        update_cache: yes
+        update_cache: true
       notify:
         - restart nginx
-      tags: 
-      - install-nginx
-      - prep
+      tags:
+        - install-nginx
+        - prep
 
     - name: update nginx.conf
       ansible.builtin.template:
-        src: "nginx.conf.j2"
-        dest: "/etc/nginx/sites-available/default"
+        src: nginx.conf.j2
+        dest: /etc/nginx/sites-available/default
       notify:
         - restart nginx
-      tags: 
-      - install-nginx
-      - prep
+      tags:
+        - install-nginx
+        - prep
 
     - name: Copy keys
       ansible.builtin.copy:
@@ -165,59 +160,54 @@
         dest: /etc/nginx/keys/
         owner: root
         group: root
-        mode: '0600'
+        mode: "0600"
       notify:
         - restart nginx
-      tags: 
-      - prep
-      - install-nginx
-
+      tags:
+        - prep
+        - install-nginx
 
     - name: a job check upmon
       ansible.builtin.cron:
-        name: "check lb"
+        name: check lb
         hour: "*"
         minute: "*/30"
-        job: "curl -A 'GOOOOOD - ZBS' -Is https://upmon.net/{{ upmontoken }}"
+        job: curl -A 'GOOOOOD - ZBS' -Is https://upmon.net/{{ upmontoken }}
       notify:
         - restart cron
-      tags: 
-      - upmon
-      - prep
-
+      tags:
+        - upmon
+        - prep
 
     - name: Remove nginx package
       ansible.builtin.apt:
         name: nginx
         state: absent
-      tags: 
-      - remove-nginx
+      tags:
+        - remove-nginx
 
   handlers:
     - name: restart nginx
       ansible.builtin.service:
         name: nginx
         state: reloaded
-      tags: 
-      - install-nginx
-      - prep
+      tags:
+        - install-nginx
+        - prep
 
     - name: restart cron
       ansible.builtin.service:
         name: cron
         state: restarted
-      tags: 
-      - upmon
-      - prep
-
-
+      tags:
+        - upmon
+        - prep
 
 - hosts: all
-  become: yes
-  tasks:  
-
+  become: true
+  tasks:
     - name: Reboot machine and send a message
       ansible.builtin.reboot:
-        msg: "Rebooting machine in 5 seconds"
-      tags: 
-      - restart
+        msg: Rebooting machine in 5 seconds
+      tags:
+        - restart
