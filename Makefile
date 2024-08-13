@@ -9,7 +9,6 @@ yc-reconf:
 	terraform -chdir=terraform init -backend-config=secret.backend.tfvars -reconfigure
 	rm -f terraform/secret.backend.tfvars
 
-
 tf-create:
 #	ssh-keygen -m PEM -t rsa -b 4096 -f id_rsa -N ''
 	ansible-vault  decrypt terraform/var.secret.auto.tf.enc --vault-password-file key.secret --output terraform/var.secret.auto.tf
@@ -19,8 +18,6 @@ tf-create:
 	resolvectl flush-caches
 	ansible-galaxy install -r ansible/requirements.yml
 	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t prep --vault-password-file key.secret
-
-
 
 tf-destroy:
 	ansible-vault  decrypt terraform/var.secret.auto.tf.enc --vault-password-file key.secret --output terraform/var.secret.auto.tf
@@ -43,7 +40,6 @@ cp-tmpl2vars-main:
 	cp terraform/tmpl/var.secret.auto.tmpl terraform/secret_vars/var.secret.auto.tf
 	@echo ">> Next fill out the template file terraform/secret_vars/terraform/secret_vars/var.secret.auto.tf" 
 	@echo ">> After that, encrypt the file terraform/secret_vars/terraform/secret_vars/var.secret.auto.tf (keyFile key.secret): make ansible-enc-main \n" 
-
 
 ### Работа с vars
 # Шифруем переменные в каталоге terraform/secret_vars и удаляем исходные файлы
