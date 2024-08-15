@@ -1,4 +1,6 @@
 
+/*
+variable "yc_postgresql_version" {}
 variable "yc_token" {}
 variable "folderID" {}
 variable "web-servers" {}
@@ -8,6 +10,8 @@ variable "db_name" {}
 variable "db_user" {}
 variable "db_password" {}
 variable "ssh_pub" {}
+*/
+
 
 provider "yandex" {
   zone  = "ru-central1-a"
