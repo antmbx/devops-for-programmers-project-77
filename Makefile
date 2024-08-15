@@ -1,13 +1,20 @@
 # Makefile
  
 ansible-ex:
-	ansible-galaxy install -r requirements.yml
-	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t prep --ask-vault-pass
+	ansible-galaxy install -r ansible/requirements.yml
+	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t prep --vault-password-file key.secret
 
 yc-reconf:
 	ansible-vault  decrypt terraform/secret.backend.tfvars.enc --vault-password-file key.secret --output terraform/secret.backend.tfvars
 	terraform -chdir=terraform init -backend-config=secret.backend.tfvars -reconfigure
+	terraform -chdir=terraform init -backend-config=secret.backend.tfvars -upgrade
 	rm -f terraform/secret.backend.tfvars
+
+tf-plan:
+	ansible-vault  decrypt terraform/var.secret.auto.tf.enc --vault-password-file key.secret --output terraform/var.secret.auto.tf
+	terraform -chdir=terraform plan 
+	rm -f terraform/var.secret.auto.tf
+
 
 tf-create:
 #	ssh-keygen -m PEM -t rsa -b 4096 -f id_rsa -N ''

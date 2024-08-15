@@ -50,8 +50,8 @@ resource "yandex_compute_instance" "default" {
   }
 
   metadata = {
-    ssh-keys = "ubuntu:${var.ssh_pub}"
-    #ssh-keys = "ubuntu:${file("id_rsa.pub")}"
+    #ssh-keys = "ubuntu:${var.ssh_pub}"
+    ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
     #user-data = "${file("./cloud-init.yml")}"
     user-data = <<-EOF
     #!/bin/bash
@@ -62,12 +62,13 @@ resource "yandex_compute_instance" "default" {
     echo 'export REDMINE_DB_USERNAME="${var.db_user}"' >> /home/ubuntu/.env
     echo 'export REDMINE_DB_PASSWORD="${var.db_password}"' >> /home/ubuntu/.env
     chmod 0660 /home/ubuntu/.env
-
-
     EOF
 
 
   }
+
+  depends_on = [yandex_mdb_postgresql_database.db]
+
 }
 
 
@@ -81,3 +82,7 @@ resource "yandex_compute_disk" "default" {
   folder_id = var.folderID
   size      = 10
 }
+
+
+
+
