@@ -44,8 +44,8 @@ resource "yandex_compute_instance" "default" {
   }
 
   metadata = {
-    #ssh-keys = "ubuntu:${var.ssh_pub}"
-    ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
+    ssh-keys = "ubuntu:${var.ssh_pub}"
+    #ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
     #user-data = "${file("./cloud-init.yml")}"
     user-data = <<-EOF
     #!/bin/bash
