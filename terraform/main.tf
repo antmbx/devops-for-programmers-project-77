@@ -1,5 +1,5 @@
 
-/*
+
 variable "yc_postgresql_version" {}
 variable "yc_token" {}
 variable "folderID" {}
@@ -10,13 +10,7 @@ variable "db_name" {}
 variable "db_user" {}
 variable "db_password" {}
 variable "ssh_pub" {}
-*/
 
-
-provider "yandex" {
-  zone  = "ru-central1-a"
-  token = var.yc_token
-}
 
 
 
@@ -56,18 +50,18 @@ resource "yandex_compute_instance" "default" {
     user-data = <<-EOF
     #!/bin/bash
     mkdir /home/ubuntu
-    echo 'export REDMINE_DB_POSTGRES="${data.yandex_mdb_postgresql_cluster.dbcluster.host.0.fqdn}"' >> /home/ubuntu/.env
-    echo 'export REDMINE_DB_PORT="6432"' >> /home/ubuntu/.env 
-    echo 'export REDMINE_DB_DATABASE="${var.db_name}"' >> /home/ubuntu/.env
-    echo 'export REDMINE_DB_USERNAME="${var.db_user}"' >> /home/ubuntu/.env
-    echo 'export REDMINE_DB_PASSWORD="${var.db_password}"' >> /home/ubuntu/.env
+    echo '#env-redmine' >> /home/ubuntu/.env
     chmod 0660 /home/ubuntu/.env
     EOF
 
 
   }
 
+
+
+
   depends_on = [yandex_mdb_postgresql_database.db]
+
 
 }
 

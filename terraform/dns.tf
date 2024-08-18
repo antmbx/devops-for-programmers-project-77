@@ -1,13 +1,13 @@
 resource "yandex_dns_zone" "zone1" {
   name        = "my-private-zone"
   description = "hexlet project dns"
-  folder_id = var.folderID
+  folder_id   = var.folderID
   labels = {
     label1 = "hxlt-label-1"
   }
 
-  zone             = "${var.zone-1}."
-  public           = true
+  zone   = "${var.zone-1}."
+  public = true
 }
 
 

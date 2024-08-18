@@ -28,6 +28,8 @@ resource "yandex_mdb_postgresql_cluster" "dbcluster" {
   }
 
 
+
+
 }
 
 resource "yandex_mdb_postgresql_user" "dbuser" {
@@ -43,6 +45,40 @@ resource "yandex_mdb_postgresql_database" "db" {
   owner      = yandex_mdb_postgresql_user.dbuser.name
   lc_collate = "en_US.UTF-8"
   lc_type    = "en_US.UTF-8"
+
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      (echo $db_fqdn; echo $db_name; echo $db_user; echo $db_password; echo $db_port; echo $datadog_api_key) > ansible/group_vars/webservers/vault.yml
+    
+      ansible-vault  encrypt ansible/group_vars/webservers/vault.yml --vault-password-file key.secret
+   
+    EOT  
+
+
+
+    working_dir = "../"
+
+    environment = {
+      db_fqdn         = "REDMINE_DB_POSTGRES: ${data.yandex_mdb_postgresql_cluster.dbcluster.host.0.fqdn}\n"
+      db_name         = "REDMINE_DB_DATABASE: ${var.db_name}\n"
+      db_user         = "REDMINE_DB_USERNAME: ${var.db_user}\n"
+      db_password     = "REDMINE_DB_PASSWORD: ${var.db_password}\n"
+      db_port         = "REDMINE_DB_PORT: 6432\n"
+      datadog_api_key = "datadog_api_key: ${var.datadog_api_key}\n"
+
+
+
+    }
+
+
+
+  }
+
   depends_on = [yandex_mdb_postgresql_cluster.dbcluster]
+
+
+
+
 }
 

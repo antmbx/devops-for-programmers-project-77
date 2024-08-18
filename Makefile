@@ -98,4 +98,9 @@ ansible-upmon-reload:
 
 
 ansible-restart:
-	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t restart --vault-password-file key.secret		
+	ansible-playbook ansible/playbook.yml -i ansible/inventory.ini -kK -t restart --vault-password-file key.secret
+
+linter-repair:
+	terraform -chdir=terraform fmt
+	ansible-lint ansible/playbook.yml -t yaml[trailing-spaces] --write=trailing-spaces
+	#ansible-lint ansible/playbook.yml -t yaml[trailing-spaces] --write=all
