@@ -1,5 +1,5 @@
-
-
+variable "datadog_api_key" {}
+variable "zone-1" {}
 variable "yc_postgresql_version" {}
 variable "yc_token" {}
 variable "folderID" {}
